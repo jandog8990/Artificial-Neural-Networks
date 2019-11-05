@@ -22,6 +22,8 @@ def calculateSynapse(t, V, ws, Es, ts, tau_s):
     synOut = ws*(V - Es)*Ps
     return synOut
 
+# --------------------------------------------------------
+
 Ie = 0.0
 El = -0.065
 V_reset = El
