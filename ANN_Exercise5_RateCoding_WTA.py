@@ -46,8 +46,10 @@ jmax = int(T/dt)
 V = np.zeros([4, jmax])
 Y = np.zeros([4, jmax])
 t = np.zeros(jmax)
-Y[0,:] = 1.0                # input Y1 in paper
-Y[1,:] = 0.95               # input Y2 in paper
+y1 = 1.0
+y2 = 0.5
+Y[0,:] = y1                # input Y1 in paper
+Y[1,:] = y2                # input Y2 in paper
 print("Voltage matrix size = " + str(V.shape))
 print("Output matrix size = " + str(Y.shape))
 print("Output Y0 size = " + str(len(Y[0,:])))
@@ -66,15 +68,17 @@ w[3,3] = 1
 
 print("Weights:")
 print(w)
+print("\n")
 
 # Non-linear initialization
 a = 0.1
 phi = list()
+varr = list()
 for v in np.arange(-2.0, 2.0, 0.1):
     if v >= 0:
         phiv = (v**2)/(a+v**2)
         phi.append(phiv)
-v = 0
+        varr.append(v)
 
 # Outer loop for kth neuron calculation
 for k in range(2,n):
@@ -103,6 +107,30 @@ print("Output Y Matrix:")
 print(Y)
 print("\n")
 
-# Plot the output firing rates for two output neurons y2 (blue) and y4 (red)
-plt.plot(t, Y[2,:], 'b', t, 1.3*Y[3,:], 'r')
+print("Varr len = " + str(len(varr)))
+print("Phi V len = " + str(len(phi)))
+plt.figure()
+plt.plot(varr, phi)
+plt.title("Phi(v) Output Function")
+plt.ylabel("Phi(v)")
+plt.xlabel("v (internal activation)")
+plt.show()
+
+# Plot the output firing rates for two output neurons y2 (blue) and y3 (red)
+y3 = 1*Y[2,:]
+y4 = 1.5*Y[3,:]
+title1 = "WTA Output Firing Rates vs Time (y1 = {}, y2 = {})".format(y1, y2)
+plt.figure()
+plt.plot(t, y3, 'b', t, y4, 'r')
+plt.title(title1)
+plt.ylabel("Output risi y3(blue) & y4(red)")
+plt.xlabel("Time (t)")
+plt.show()
+
+# Scatter plot for output firing rates (y3 & y4)
+plt.figure()
+plt.scatter(y3, y4, alpha=0.5, s=1)
+plt.title("WTA Scatter Output Firing Rates (y3 & y4)")
+plt.ylabel("Output risi y4")
+plt.xlabel("Output risi y3")
 plt.show()
